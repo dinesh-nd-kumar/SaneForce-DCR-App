@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="doctor"
+            type="com.example.saneforcedoc.repo.Doctor" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <!-- Doctor Name -->
+            <TextView
+                android:id="@+id/tvDoctorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{doctor.name}"
+                tools:text="Aravind Raj Kumaraswamy"
+                android:textColor="#212121"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Category Label -->
+            <TextView
+                android:id="@+id/tvCategoryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category"
+                android:textColor="#757575"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDoctorName"
+                />
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{doctor.doctorCategoryName}"
+                tools:text="Neuro Surgeon"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/tvCategoryLabel"
+                app:layout_constraintTop_toBottomOf="@id/tvDoctorName"
+                app:layout_constraintBaseline_toBaselineOf="@id/tvCategoryLabel" />
+
+            <!-- Location Badge -->
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{doctor.townName}"
+                tools:text="Mamallapuram"
+                android:textSize="12sp"
+                android:textColor="#D32F2F"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCategoryLabel"
+                />
+
+            <!-- Distance Icon -->
+            <!-- <ImageView
+                 android:id="@+id/ivLocationIcon"
+                 android:layout_width="16dp"
+                 android:layout_height="16dp"
+                 android:src="@drawable/ic_location"
+                 app:tint="#D32F2F"
+                 app:layout_constraintEnd_toStartOf="@id/tvDistance"
+                 app:layout_constraintBottom_toBottomOf="@id/tvDistance"
+                 app:layout_constraintMarginEnd="4dp"/>-->
+
+            <!-- Distance -->
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{doctor.townCode}"
+                tools:text="850m"
+                android:textSize="12sp"
+                android:textColor="#D32F2F"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/tvLocation" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
