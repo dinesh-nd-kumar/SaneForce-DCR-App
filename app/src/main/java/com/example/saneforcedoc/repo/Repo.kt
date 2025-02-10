@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,12 +19,16 @@ class Repo {
 
     private lateinit var context:Context
 
-    fun loadData(c:Context){
+    suspend fun loadData(c:Context){
         context = c
-        fetchDoctorFromRoom()
-        fetchChemistFromRoom()
-        fetchDoctorFromApi()
-        fetchChemistFromApi()
+        coroutineScope {
+            async {  fetchDoctorFromRoom() }
+            async {  fetchChemistFromRoom() }
+            async {  fetchDoctorFromApi()}
+            async {  fetchChemistFromApi()}
+
+        }
+
     }
 
 
@@ -30,7 +36,7 @@ class Repo {
     fun getDoctors() = doctorsLiveData
     fun getChemist() = chemistLiveData
 
-    private fun fetchDoctorFromApi(){
+    private  fun fetchDoctorFromApi(){
         val call = RetrofitWeb.api.getDoctor(DocPostBody())
 
         call.enqueue(object : Callback<DocResponse> {
@@ -72,19 +78,16 @@ class Repo {
         })
     }
 
-    private fun fetchDoctorFromRoom() {
-        GlobalScope.launch {
+    private suspend fun fetchDoctorFromRoom() {
             DatabaseBuilder.run {
                 doctorsLiveData.postValue(getInstance(context).productDao().getAllProducts())
-            }
         }
 
     }
-    private fun fetchChemistFromRoom() {
-        GlobalScope.launch {
+    private suspend fun fetchChemistFromRoom() {
             DatabaseBuilder.run {
                 chemistLiveData.postValue(getInstance(context).chemistDao().getAllProducts())
-            }
+
         }
 
     }
@@ -92,7 +95,6 @@ class Repo {
      fun saveProductInRoom(body: List<Doctor>) {
          GlobalScope.launch {
              DatabaseBuilder.run {
-//            getInstance(context!!).productDao().deleteAllProducts()
                  getInstance(context).productDao().insertProducts(body)
              }
          }
@@ -100,7 +102,6 @@ class Repo {
     fun saveChemistInRoom(body: List<Chemist>) {
         GlobalScope.launch {
             DatabaseBuilder.run {
-//            getInstance(context!!).productDao().deleteAllProducts()
                 getInstance(context).chemistDao().insertProducts(body)
             }
         }
